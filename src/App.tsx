@@ -11,8 +11,8 @@ function App() {
       <ThemeProvider>
         <Layout>
           <Routes>
-            <Route path='/' element={<WeatherDashboard/>}/>
-            <Route path='/city/:cityname' element={<CityPage/>}/>
+            <Route path="/" element={<WeatherDashboard />} />
+            <Route path="/city/:cityname" element={<CityPage />} />
           </Routes>
         </Layout>
       </ThemeProvider>
