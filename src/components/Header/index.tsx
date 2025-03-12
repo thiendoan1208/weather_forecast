@@ -10,10 +10,10 @@ function Header() {
   const isDark = theme === 'dark';
 
   return (
-    <header className=" border-b sticky top-0 z-50 w-full bg-background/95 backdrop-blur py-2 supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+    <header className=" border-b sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 overflow-hidden">
         <Link to={'/'}>
-          <img className="w-15" src={images.HeaderLogo} alt="Weather Logo" />
+          <img className="w-20 -ml-1" src={images.HeaderLogo} alt="Weather Logo" />
         </Link>
 
         <div
