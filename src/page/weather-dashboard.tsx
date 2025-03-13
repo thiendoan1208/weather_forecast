@@ -17,7 +17,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { RefreshCw } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
 
-// React 
+// React
 import { useEffect, useState } from 'react';
 
 // src
@@ -26,6 +26,7 @@ import { fetchCurrentCityWeather } from '@/Service/weather';
 
 // Component
 import CurrentWeather from '@/components/CurrentWeatherCard';
+import HourlyTemp from '@/components/HourlyTemp';
 
 function WeatherDashboard() {
   const [data, setData] = useState<CurrentWeatherConfig | null>(null);
@@ -120,25 +121,25 @@ function WeatherDashboard() {
         </Alert>
       ) : (
         <>
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold tracking-tight">My Location</h1>
+            <Button
+              onClick={() => {
+                handleCurrentWeather(data?.coord.lat, data?.coord.lon);
+              }}
+              variant={'outline'}
+              size={'icon'}
+              className="cursor-pointer"
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : 'animate-none'}`} />
+            </Button>
+          </div>
           {!isLoading ? (
             <div>
-              <div className="flex items-center justify-between">
-                <h1 className="text-xl font-bold tracking-tight">My Location</h1>
-                <Button
-                  onClick={() => {
-                    handleCurrentWeather(data?.coord.lat, data?.coord.lon);
-                  }}
-                  variant={'outline'}
-                  size={'icon'}
-                  className="cursor-pointer"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className='grid gap-6'>
-                <div>
+              <div className="grid gap-6">
+                <div className="flex flex-col lg:flex-row gap-2 ">
                   <CurrentWeather data={data} />
-                  {/* hourly tem */}
+                  {data?.coord && <HourlyTemp lat={data?.coord.lat} lon={data?.coord.lon} />}
                 </div>
                 <div>
                   {/* detail */}

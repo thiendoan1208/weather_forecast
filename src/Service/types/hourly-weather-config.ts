@@ -1,4 +1,4 @@
-interface Coord {
+export interface HourlyCoord {
   lat: number;
   lon: number;
 }
@@ -56,7 +56,7 @@ interface WeatherEntry {
 interface City {
   id: number;
   name: string;
-  coord: Coord;
+  coord: HourlyCoord;
   country: string;
   population: number;
   timezone: number;
@@ -64,7 +64,7 @@ interface City {
   sunset: number;
 }
 
-export interface FiveDayWeather {
+export interface HourlyWeather {
   list: WeatherEntry[];
   city: City;
 }
