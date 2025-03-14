@@ -27,6 +27,9 @@ import { fetchCurrentCityWeather } from '@/Service/weather';
 // Component
 import CurrentWeather from '@/components/CurrentWeatherCard';
 import HourlyTemp from '@/components/HourlyTemp';
+import WeatherDetail from '@/components/WeatherDetail';
+import WeatherForecast from '@/components/WeatherForecast';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 function WeatherDashboard() {
   const [data, setData] = useState<CurrentWeatherConfig | null>(null);
@@ -136,14 +139,25 @@ function WeatherDashboard() {
           </div>
           {!isLoading ? (
             <div>
-              <div className="grid gap-6">
-                <div className="flex flex-col lg:flex-row gap-2 ">
+              <div className="grid lg:grid-cols-1 lg:grid-rows-2 gap-6">
+                <div className="flex flex-col lg:flex-row gap-2">
                   <CurrentWeather data={data} />
                   {data?.coord && <HourlyTemp lat={data?.coord.lat} lon={data?.coord.lon} />}
                 </div>
-                <div>
-                  {/* detail */}
-                  {/* Forecast */}
+                <div className="flex flex-col lg:flex-row gap-2">
+                  {data ? (
+                    <WeatherDetail data={data} />
+                  ) : (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Weather Details</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className='font-bold text-xl'>Loading....</p>
+                      </CardContent>
+                    </Card>
+                  )}
+               {data?.coord && <WeatherForecast lat={data?.coord.lat} lon={data?.coord.lon} />}
                 </div>
               </div>
             </div>

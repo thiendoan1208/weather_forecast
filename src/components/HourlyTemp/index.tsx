@@ -8,7 +8,7 @@ import { fetchHourlyTemp } from '@/Service/weather';
 
 
 function HourlyTemp({ lat, lon }: HourlyCoord) {
-  const [hourlyinFo, setHourlyinFo] = useState<object[]>([]);
+  const [hourlyinFo, setHourlyinFo] = useState<object[]>();
 
   useEffect(() => {
     getHourlyWeather();
@@ -32,7 +32,7 @@ function HourlyTemp({ lat, lon }: HourlyCoord) {
   return (
     <Card className="flex-1 my-2">
       <CardHeader>
-        <CardTitle>Today's Temperature</CardTitle>
+        <CardTitle>Tomorrow's Temperature</CardTitle>
       </CardHeader>
       <CardContent className="w-full h-full">
         <ResponsiveContainer width="100%" height="100%">

@@ -40,7 +40,7 @@ interface Sys {
   pod: string;
 }
 
-interface WeatherEntry {
+export interface WeatherEntry {
   dt: number;
   main: MainWeather;
   weather: Weather[];
