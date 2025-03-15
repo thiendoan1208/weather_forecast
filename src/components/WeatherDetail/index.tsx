@@ -42,7 +42,7 @@ function WeatherDetail({ data }: { data: CurrentWeatherConfig }) {
   ];
 
   return (
-    <div>
+    <div className='flex-1'>
       <Card>
         <CardHeader>
           <CardTitle>Weather Details</CardTitle>
