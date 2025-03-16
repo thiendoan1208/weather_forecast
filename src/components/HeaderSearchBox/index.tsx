@@ -10,11 +10,10 @@ import CurrentWeatherConfig from '@/Service/types/current-weather-config';
 import { useNavigate } from 'react-router-dom';
 import useSearchHistory from '@/Hook/useSearchHistory';
 
-
 function HeaderSearchBox() {
   const [input, setInput] = useState('');
   const [searchResult, setSearchResult] = useState<CurrentWeatherConfig | null>(null);
-  const { searchHistory, addToHistory, deleteEachResult, clearHistory } = useSearchHistory();
+  const { searchHistory, addToHistory, deleteEachResult, clearHistory } = useSearchHistory('search_history');
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);

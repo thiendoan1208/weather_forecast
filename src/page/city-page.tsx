@@ -15,11 +15,11 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Lucide React
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Star, StarIcon, StarOff } from 'lucide-react';
 import { AlertCircle } from 'lucide-react';
 
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect, SetStateAction, useCallback } from 'react';
 import { fetchSearchWeatherResult } from '@/Service/weather';
 
 // src
@@ -30,6 +30,8 @@ import CurrentWeather from '@/components/CurrentWeatherCard';
 import HourlyTemp from '@/components/HourlyTemp';
 import WeatherDetail from '@/components/WeatherDetail';
 import WeatherForecast from '@/components/WeatherForecast';
+import { ToastContainer, toast } from 'react-toastify';
+import useFav from '@/Hook/useFavourite';
 
 function CityPage() {
   const { cityname } = useParams();
@@ -37,6 +39,9 @@ function CityPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isErrorWhenFetching, setIsErrorWhenFetching] = useState(false);
+  const [isFavourite, setIsfavourite] = useState(false);
+  const [notiThemeMode, setNotiThemeMode] = useState(localStorage.getItem('vite-ui-theme'));
+  const { favItem, addToFavList, deleteEachResult } = useFav('fav-item');
 
   // get city location
   useEffect(() => {
@@ -59,6 +64,76 @@ function CityPage() {
     }
   };
 
+  const customToast = () => {
+    return (
+      <div className="w-full flex">
+        <div>
+          <div>
+            <p className="font-bold">Notification</p>
+          </div>
+          <div className="">
+            {isFavourite ? (
+              <div className="flex items-center text-red-500 gap-1.5">
+                <StarOff />
+                <p className="">Removed from Favourite</p>
+              </div>
+            ) : (
+              <div className="flex items-center text-yellow-500 gap-1.5">
+                <StarIcon />
+                <p className="">Add to Favourite Sucessfully !</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const addToFavourite = () => {
+    if (isFavourite) {
+      setIsfavourite(false);
+    } else {
+      setIsfavourite(true);
+    }
+    saveFavouriteItem();
+    notiTheme();
+    toast(customToast, {
+      closeButton: true,
+      className: 'p-0 w-[400px]',
+      ariaLabel: 'Notify',
+    });
+  };
+
+  const notiTheme = () => {
+    const theme = localStorage.getItem('vite-ui-theme');
+    setNotiThemeMode(theme ? theme : '');
+  };
+
+  const saveFavouriteItem = () => {
+    if (isFavourite) {
+      deleteEachResult({ cityInfo: cityname ? cityname : '', status: 'unsetted' });
+      setIsfavourite(false);
+    } else {
+      addToFavList({ cityInfo: cityname ? cityname : '', status: 'setted' });
+      setIsfavourite(true);
+    }
+  };
+
+  const handleFavIcon = useCallback(() => {
+    for (let i = 0; i < favItem.length; i++) {
+      if (favItem[i].cityInfo === cityname) {
+        setIsfavourite(true);
+        break;
+      } else {
+        setIsfavourite(false);
+      }
+    }
+  }, [cityname, favItem]);
+
+  useEffect(() => {
+    handleFavIcon();
+  }, [handleFavIcon]);
+
   return (
     <div>
       {isError ? (
@@ -68,7 +143,6 @@ function CityPage() {
           <AlertDescription>
             {isErrorWhenFetching ? 'Error when trying to get local weather' : 'Please grant access to your location'}
           </AlertDescription>
-          {/* Dialog */}
           <AlertDialog>
             <AlertDialogTrigger asChild>
               {isErrorWhenFetching ? (
@@ -109,12 +183,32 @@ function CityPage() {
       ) : (
         <>
           <div className="flex items-center justify-between">
-            <div className="space-y-2 flex gap-1">
+            {!isLoading ? (
               <div className="flex items-center">
-                <h2 className="text-2xl font-bold tracking-tighter">{data?.name},</h2>
+                <div className="space-y-2 flex gap-1">
+                  <div className="flex items-center">
+                    <h2 onClick={handleFavIcon} className="text-2xl font-bold tracking-tighter">
+                      {data?.name},
+                    </h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{data?.sys.country}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    addToFavourite();
+                  }}
+                  className={`transition-all cursor-pointer flex items-center justify-center w-9 h-9 border rounded-sm mr-auto ml-4 
+                ${isFavourite ? 'bg-yellow-500' : 'bg-transparent'} 
+                ${isFavourite ? 'text-black' : ''}
+                `}
+                >
+                  <Star className="w-4 h-4" />
+                </button>
               </div>
-              <p className="text-sm text-muted-foreground">{data?.sys.country}</p>
-            </div>
+            ) : (
+              <span></span>
+            )}
+
             <Button
               onClick={() => {
                 handleCurrentWeather(cityname);
@@ -157,6 +251,18 @@ function CityPage() {
           )}
         </>
       )}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={notiThemeMode ? notiThemeMode : ''}
+      />
     </div>
   );
 }
