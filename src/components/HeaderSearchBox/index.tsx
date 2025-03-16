@@ -3,15 +3,18 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { fetchSearchWeatherResult } from '@/Service/weather';
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2, Search, XCircleIcon } from 'lucide-react';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import useDebounce from '@/Hook/useDebounce';
 import CurrentWeatherConfig from '@/Service/types/current-weather-config';
 import { useNavigate } from 'react-router-dom';
+import useSearchHistory from '@/Hook/useSearchHistory';
+
 
 function HeaderSearchBox() {
   const [input, setInput] = useState('');
   const [searchResult, setSearchResult] = useState<CurrentWeatherConfig | null>(null);
+  const { searchHistory, addToHistory, deleteEachResult, clearHistory } = useSearchHistory();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -44,9 +47,22 @@ function HeaderSearchBox() {
     }
   };
 
-  const handleNavigate = (data: CurrentWeatherConfig | null) => {
+  const handleNavigate = async (data: CurrentWeatherConfig | null) => {
     if (data && data.name.length > 0) {
-      navigate(`/city/${data.name}`);
+      await navigate(`/city/${data.name}`);
+      setOpen(false);
+      const setHistory = setTimeout(() => {
+        addToHistory(data);
+      }, 500);
+      return () => {
+        clearTimeout(setHistory);
+      };
+    }
+  };
+
+  const handleNavigateHistory = async (data: CurrentWeatherConfig | null) => {
+    if (data && data.name.length > 0) {
+      await navigate(`/city/${data.name}`);
       setOpen(false);
     }
   };
@@ -55,7 +71,7 @@ function HeaderSearchBox() {
     if (name) {
       return `${name},`;
     }
-    return ''; 
+    return '';
   };
 
   return (
@@ -100,6 +116,38 @@ function HeaderSearchBox() {
                 </div>
               </>
             )}
+          </div>
+          <div className="border-t my-3 flex justify-between">
+            <span className="text-muted-foreground font-bold text-sm">History</span>
+            <div onClick={clearHistory} className="flex items-center hover:underline cursor-pointer">
+              <span className="text-sm mr-1">Clear History</span>
+              <XCircleIcon className="w-4 h-4 translate-y-0.5" />
+            </div>
+          </div>
+          <div className="">
+            {searchHistory.map((item, index) => (
+              <div
+                key={`history-${index}`}
+                onClick={() => {
+                  handleNavigateHistory(item);
+                }}
+                className="group flex items-center justify-between my-1 py-3 px-2 rounded-md hover:bg-gray-500/50 transition-all cursor-pointer"
+              >
+                <div className="flex items-center">
+                  <p>{formatName(item?.name)}</p>
+                  <p className="text-muted-foreground pl-1.5 text-sm">{item?.sys.country}</p>
+                </div>
+                <div>
+                  <XCircleIcon
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteEachResult(`history-${index}`);
+                    }}
+                    className="w-5 h-5 hidden group-hover:block transition-all delay-500"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </DialogContent>

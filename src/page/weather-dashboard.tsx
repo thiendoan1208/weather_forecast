@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Lucide React
 import { RefreshCw } from 'lucide-react';
@@ -29,7 +30,6 @@ import CurrentWeather from '@/components/CurrentWeatherCard';
 import HourlyTemp from '@/components/HourlyTemp';
 import WeatherDetail from '@/components/WeatherDetail';
 import WeatherForecast from '@/components/WeatherForecast';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 function WeatherDashboard() {
   const [data, setData] = useState<CurrentWeatherConfig | null>(null);
