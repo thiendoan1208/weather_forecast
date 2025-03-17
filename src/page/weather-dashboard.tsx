@@ -30,6 +30,7 @@ import CurrentWeather from '@/components/CurrentWeatherCard';
 import HourlyTemp from '@/components/HourlyTemp';
 import WeatherDetail from '@/components/WeatherDetail';
 import WeatherForecast from '@/components/WeatherForecast';
+import FavWeather from '@/components/FavWeather';
 
 function WeatherDashboard() {
   const [data, setData] = useState<CurrentWeatherConfig | null>(null);
@@ -124,6 +125,9 @@ function WeatherDashboard() {
         </Alert>
       ) : (
         <>
+          <div>
+            <FavWeather />
+          </div>
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold tracking-tight">My Location</h1>
             <Button
@@ -153,11 +157,11 @@ function WeatherDashboard() {
                         <CardTitle>Weather Details</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className='font-bold text-xl'>Loading....</p>
+                        <p className="font-bold text-xl">Loading....</p>
                       </CardContent>
                     </Card>
                   )}
-               {data?.coord && <WeatherForecast lat={data?.coord.lat} lon={data?.coord.lon} />}
+                  {data?.coord && <WeatherForecast lat={data?.coord.lat} lon={data?.coord.lon} />}
                 </div>
               </div>
             </div>

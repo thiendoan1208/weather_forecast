@@ -1,0 +1,21 @@
+/* width */
+.customize-scrollbar-section::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+.customize-scrollbar-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.customize-scrollbar-section::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  cursor: default;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.customize-scrollbar-section::-webkit-scrollbar-thumb:hover {
+  background: #b8b8b8;
+}

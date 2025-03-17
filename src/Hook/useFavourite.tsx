@@ -26,7 +26,14 @@ function useFav(key: string) {
     setFavItem(filterArray);
   };
 
-  return { favItem, addToFavList, deleteEachResult };
+  const deleteRenderResult = (cityName: string) => {
+    const newArray = [...favItem];
+    const filterArray = newArray.filter((item) => item.cityInfo != cityName);
+    localStorage.setItem(key, JSON.stringify(filterArray));
+    setFavItem(filterArray);
+  };
+
+  return { favItem, addToFavList, deleteEachResult, deleteRenderResult };
 }
 
 export default useFav;
