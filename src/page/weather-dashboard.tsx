@@ -77,7 +77,7 @@ function WeatherDashboard() {
   };
 
   return (
-    <div>
+    <div >
       {isError ? (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
@@ -143,9 +143,9 @@ function WeatherDashboard() {
           </div>
           {!isLoading ? (
             <div>
-              <div className="grid gap-6">
+              <div className="flex flex-col md:grid gap-6">
                 <div className="flex flex-col lg:flex-row gap-2">
-                  <CurrentWeather data={data} />
+                  {data && <CurrentWeather data={data} />}
                   {data?.coord && <HourlyTemp lat={data?.coord.lat} lon={data?.coord.lon} />}
                 </div>
                 <div className="flex flex-col lg:flex-row gap-2">

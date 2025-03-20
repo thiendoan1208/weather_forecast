@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { HourlyCoord } from '@/Service/types/hourly-weather-config';
 import { fetchHourlyTemp } from '@/Service/weather';
-
+import { CircleAlert } from 'lucide-react';
 
 function HourlyTemp({ lat, lon }: HourlyCoord) {
   const [hourlyinFo, setHourlyinFo] = useState<object[]>();
@@ -30,16 +30,16 @@ function HourlyTemp({ lat, lon }: HourlyCoord) {
   };
 
   return (
-    <Card className="flex-1 my-2">
+    <Card className="flex-1 my-2 ">
       <CardHeader>
         <CardTitle>Tomorrow's Temperature</CardTitle>
       </CardHeader>
       <CardContent className="w-full h-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={hourlyinFo} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+          <LineChart data={hourlyinFo} margin={{ top: 5, right: 20, bottom: 5, left: 0 }} className="hidden sm:block">
             <Line type="monotone" dataKey="Temp" stroke="#8884d8" />
             <Line type="monotone" dataKey="feelLike" stroke="#e82768" />
-            <XAxis className='text-[12px]' dataKey="date" />
+            <XAxis className="text-[12px]" dataKey="date" />
             <YAxis />
             <Tooltip
               content={({ active, payload, label }) => {
@@ -49,14 +49,14 @@ function HourlyTemp({ lat, lon }: HourlyCoord) {
                       <div>
                         <p>{`Date: ${label}`}</p>
                       </div>
-                      <div className='flex gap-2'>
+                      <div className="flex gap-2">
                         <div>
-                          <p className='text-muted-foreground tracking-wide'>TEMPERATURE</p>
-                          <p className='text-blue-500'>{`${payload[0].value}°C`}</p>
+                          <p className="text-muted-foreground tracking-wide">TEMPERATURE</p>
+                          <p className="text-blue-500">{`${payload[0].value}°C`}</p>
                         </div>
                         <div>
-                          <p className='text-muted-foreground tracking-wide'>FEELS LIKE</p>
-                          <p className='text-pink-400'>{`${payload[1].value}°C`}</p>
+                          <p className="text-muted-foreground tracking-wide">FEELS LIKE</p>
+                          <p className="text-pink-400">{`${payload[1].value}°C`}</p>
                         </div>
                       </div>
                     </div>
@@ -66,6 +66,12 @@ function HourlyTemp({ lat, lon }: HourlyCoord) {
             />
           </LineChart>
         </ResponsiveContainer>
+        <div className="block sm:hidden">
+          <div className="flex space-x-2 items-center">
+            <CircleAlert className="text-yellow-500 w-10 h-10" />
+            <p className="">This is a line chart. For the best experience, please use a device with a larger screen.</p>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

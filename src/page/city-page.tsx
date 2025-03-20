@@ -222,7 +222,7 @@ function CityPage() {
           </div>
           {!isLoading ? (
             <div>
-              <div className="grid gap-6">
+              <div className="flex flex-col md:grid gap-6">
                 <div className="flex flex-col lg:flex-row gap-2">
                   <CurrentWeather data={data} />
                   {data?.coord && <HourlyTemp lat={data?.coord.lat} lon={data?.coord.lon} />}
@@ -255,8 +255,8 @@ function CityPage() {
         </>
       )}
       <ToastContainer
-        position="bottom-right"
-        autoClose={2000}
+        position="top-left"
+        autoClose={1500}
         hideProgressBar={true}
         newestOnTop={false}
         closeOnClick={false}

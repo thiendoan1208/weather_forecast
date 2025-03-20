@@ -52,7 +52,7 @@ function WeatherDetail({ data }: { data: CurrentWeatherConfig }) {
           <CardTitle>Weather Details</CardTitle>
         </CardHeader>
         <CardContent className="">
-          <div className="grid grid-cols-2 grid-rows-2 gap-3">
+          <div className="grid lg:grid-cols-2 lg:grid-rows-2 gap-3">
             {details.map((item, index) => (
               <Card key={`detail-${index}`} className="flex flex-row items-center gap-2.5">
                 <div className="ml-4">
