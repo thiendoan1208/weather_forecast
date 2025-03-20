@@ -8,11 +8,28 @@ function useSearchHistory(key: string) {
   });
 
   const addToHistory = (data: CurrentWeatherConfig) => {
-    setSearchHistory((pre: CurrentWeatherConfig[]) => {
-      const result = [...pre, data];
-      localStorage.setItem(key, JSON.stringify(result));
-      return result;
-    });
+    if (searchHistory.length > 0) {
+      console.log(1);
+      for (let i = 0; i < searchHistory.length; i++) {
+        if (data.name != searchHistory[i].name) {
+          setSearchHistory((pre: CurrentWeatherConfig[]) => {
+            const result = [...pre, data];
+            localStorage.setItem(key, JSON.stringify(result));
+            return result;
+          });
+          break;
+        } else {
+          break;
+        }
+      }
+    } else {
+      console.log(0);
+      setSearchHistory((pre: CurrentWeatherConfig[]) => {
+        const result = [...pre, data];
+        localStorage.setItem(key, JSON.stringify(result));
+        return result;
+      });
+    }
   };
 
   const deleteEachResult = (index: string) => {

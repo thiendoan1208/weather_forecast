@@ -1,14 +1,20 @@
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { fetchSearchWeatherResult } from '@/Service/weather';
-import { DialogTitle } from '@radix-ui/react-dialog';
+
 import { Loader2, Search, XCircleIcon } from 'lucide-react';
+
 import { SetStateAction, useEffect, useRef, useState } from 'react';
-import useDebounce from '@/Hook/useDebounce';
-import CurrentWeatherConfig from '@/Service/types/current-weather-config';
+import { DialogTitle } from '@radix-ui/react-dialog';
 import { useNavigate } from 'react-router-dom';
+
+import CurrentWeatherConfig from '@/Service/types/current-weather-config';
+import { fetchSearchWeatherResult } from '@/Service/weather';
+
 import useSearchHistory from '@/Hook/useSearchHistory';
+import useDebounce from '@/Hook/useDebounce';
+
+import './header-search-box.css';
 
 function HeaderSearchBox() {
   const [input, setInput] = useState('');
@@ -17,12 +23,13 @@ function HeaderSearchBox() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const debounceValue = useDebounce(input, 300);
+  const debounceValue = useDebounce(input, 1000);
   const navigate = useNavigate();
 
   const handleInputRef = (e: { currentTarget: { value: SetStateAction<string> } }) => {
     setInput(e.currentTarget.value);
   };
+  
 
   useEffect(() => {
     if (debounceValue) {
@@ -39,8 +46,8 @@ function HeaderSearchBox() {
       const res = await fetchSearchWeatherResult(result);
       setLoading(false);
       setSearchResult(res);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log(error);
       setSearchResult(null);
       setLoading(false);
     }
@@ -50,12 +57,7 @@ function HeaderSearchBox() {
     if (data && data.name.length > 0) {
       await navigate(`/city/${data.name}`);
       setOpen(false);
-      const setHistory = setTimeout(() => {
-        addToHistory(data);
-      }, 500);
-      return () => {
-        clearTimeout(setHistory);
-      };
+      addToHistory(data);
     }
   };
 
@@ -108,7 +110,9 @@ function HeaderSearchBox() {
                   onClick={() => {
                     handleNavigate(searchResult);
                   }}
-                  className="flex items-center my-1 py-3 px-2 rounded-md hover:bg-gray-500/50 transition-all cursor-pointer"
+                  className={`flex items-center my-1 py-3 px-2 rounded-md ${
+                    debounceValue ? 'hover:bg-gray-500/50' : ''
+                  } transition-all ${debounceValue ? 'cursor-pointer' : ''}`}
                 >
                   <p>{formatName(searchResult?.name)}</p>
                   <p className="text-muted-foreground pl-1.5 text-sm">{searchResult?.sys.country}</p>
@@ -123,7 +127,7 @@ function HeaderSearchBox() {
               <XCircleIcon className="w-4 h-4 translate-y-0.5" />
             </div>
           </div>
-          <div className="">
+          <div className="max-h-[200px] overflow-auto history-list">
             {searchHistory.map((item, index) => (
               <div
                 key={`history-${index}`}

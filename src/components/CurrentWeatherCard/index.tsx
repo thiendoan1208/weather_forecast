@@ -1,6 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
-import CurrentWeatherConfig from '@/Service/types/current-weather-config';
 import { ArrowDown, ArrowUp, Droplet, Wind } from 'lucide-react';
+
+import images from '@/assets';
+import CurrentWeatherConfig from '@/Service/types/current-weather-config';
 
 function CurrentWeather({ data }: { data: CurrentWeatherConfig | null }) {
   const formatTemp = (temp: number | undefined): string => {
@@ -62,9 +64,17 @@ function CurrentWeather({ data }: { data: CurrentWeatherConfig | null }) {
             </div>
           </div>
 
-          <div className='flex flex-col items-center justify-center'>
+          <div className="flex flex-col items-center justify-center">
             <div className="relative flex aspect-square max-w-[200px] items-center justify-center ">
-              <img className='object-cover w-full h-full' src={`https://openweathermap.org/img/wn/${data?.weather[0].icon}@4x.png`} alt={data?.weather[0].description} />
+              <img
+                className="object-cover w-full h-full"
+                src={
+                  data?.weather[0].icon
+                    ? `https://openweathermap.org/img/wn/${data?.weather[0].icon}@4x.png`
+                    : images.PlaceholderImg
+                }
+                alt={data?.weather[0].description}
+              />
               <div className="absolute bottom-0 text-center">
                 <p className="text-sm font-medium capitalize">{data?.weather[0].description}</p>
               </div>

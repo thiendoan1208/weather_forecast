@@ -1,0 +1,21 @@
+/* width */
+.history-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+.history-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.history-list::-webkit-scrollbar-thumb {
+  background: #373636;
+  cursor: default;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}

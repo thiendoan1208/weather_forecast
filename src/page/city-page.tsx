@@ -245,9 +245,12 @@ function CityPage() {
               </div>
             </div>
           ) : (
-            <>
-              <Skeleton className="h-[125px] w-[100%] rounded-xl" />
-            </>
+            <div className="grid gap-5 md:grid-cols-2 md:grid-rows-2">
+              <Skeleton className="h-[125px] rounded-xl" />
+              <Skeleton className="h-[125px] rounded-xl" />
+              <Skeleton className="h-[125px] rounded-xl" />
+              <Skeleton className="h-[125px] rounded-xl" />
+            </div>
           )}
         </>
       )}

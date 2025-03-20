@@ -2,8 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from './context/theme-provider';
 
 import Layout from './components/ui/layout';
-import WeatherDashboard from './page/weather-dashboard';
-import CityPage from './page/city-page';
+import publicRoute from './Routes/routes';
 
 function App() {
   return (
@@ -11,8 +10,9 @@ function App() {
       <ThemeProvider>
         <Layout>
           <Routes>
-            <Route path="/" element={<WeatherDashboard />} />
-            <Route path="/city/:cityname" element={<CityPage />} />
+            {publicRoute.map((item, index) => (
+              <Route key={`route-${index}`} path={item.path} element={item.component} />
+            ))}
           </Routes>
         </Layout>
       </ThemeProvider>

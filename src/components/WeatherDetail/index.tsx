@@ -10,8 +10,12 @@ function WeatherDetail({ data }: { data: CurrentWeatherConfig }) {
 
   const windDirection: string[] = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const formatWind = (windInfo: number): string => {
-    const reBuild = Math.round(windInfo / 45);
-    return windDirection[reBuild];
+    if (windInfo < 360) {
+      const reBuild = Math.round(windInfo / 45);
+      return windDirection[reBuild];
+    } else {
+      return 'N';
+    }
   };
 
   const details = [
@@ -42,21 +46,21 @@ function WeatherDetail({ data }: { data: CurrentWeatherConfig }) {
   ];
 
   return (
-    <div className='flex-1'>
+    <div className="flex-1">
       <Card>
         <CardHeader>
           <CardTitle>Weather Details</CardTitle>
         </CardHeader>
-        <CardContent className=''>
-          <div className='grid grid-cols-2 grid-rows-2 gap-3'>
+        <CardContent className="">
+          <div className="grid grid-cols-2 grid-rows-2 gap-3">
             {details.map((item, index) => (
-              <Card key={`detail-${index}`} className='flex flex-row items-center gap-2.5'>
-                <div className='ml-4'>
-                    <item.icon className={`${item.color}`} />
+              <Card key={`detail-${index}`} className="flex flex-row items-center gap-2.5">
+                <div className="ml-4">
+                  <item.icon className={`${item.color}`} />
                 </div>
-                <div className='mr-4'>
-                    <p className='font-bold tracking-wide'>{item.name}</p>
-                    <p className='text-muted-foreground'>{item.value}</p>
+                <div className="mr-4">
+                  <p className="font-bold tracking-wide">{item.name}</p>
+                  <p className="text-muted-foreground">{item.value}</p>
                 </div>
               </Card>
             ))}

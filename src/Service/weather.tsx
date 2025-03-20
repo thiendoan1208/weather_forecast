@@ -14,7 +14,8 @@ const fetchHourlyTemp = (lat: number | undefined, lon: number | undefined): Prom
   return axios.get(`/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
 };
 
-const fetchSearchWeatherResult = (name: SetStateAction<string>): Promise<CurrentWeatherConfig> => {
+const fetchSearchWeatherResult = async (name: SetStateAction<string>): Promise<CurrentWeatherConfig | null> => {
+  if (name.length < 3) return null;
   return axios.get(`/weather?q=${name}&appid=${API_KEY}`);
 };
 
