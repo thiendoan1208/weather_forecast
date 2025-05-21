@@ -8,6 +8,9 @@ import { fetchHourlyTemp } from '@/Service/weather';
 import { CircleAlert } from 'lucide-react';
 
 function HourlyTemp({ lat, lon }: HourlyCoord) {
+  const controller = new AbortController();
+  const signal = controller.signal;
+
   const [hourlyinFo, setHourlyinFo] = useState<object[]>();
 
   useEffect(() => {
@@ -17,7 +20,7 @@ function HourlyTemp({ lat, lon }: HourlyCoord) {
 
   const getHourlyWeather = async () => {
     try {
-      const res = await fetchHourlyTemp(lat, lon);
+      const res = await fetchHourlyTemp(lat, lon, signal);
       const chartData = res.list.map((item) => ({
         date: item.dt_txt,
         Temp: Math.round(item.main.temp - 273.15),
@@ -27,6 +30,10 @@ function HourlyTemp({ lat, lon }: HourlyCoord) {
     } catch (error) {
       console.log(error);
     }
+
+    return () => {
+      controller.abort();
+    };
   };
 
   return (
