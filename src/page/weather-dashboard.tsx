@@ -77,7 +77,7 @@ function WeatherDashboard() {
   };
 
   return (
-    <div >
+    <div>
       {isError ? (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />

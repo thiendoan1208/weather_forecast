@@ -4,6 +4,7 @@ import { NotFound } from '@/components/NotFound';
 
 const publicRoute = [
   { path: '/', component: <WeatherDashboard /> },
+  { path: '/', component: <WeatherDashboard /> },
   { path: '/city/:cityname', component: <CityPage /> },
   { path: '*', component: <NotFound /> },
 ];

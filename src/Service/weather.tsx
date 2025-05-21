@@ -10,8 +10,8 @@ const fetchCurrentCityWeather = (lat: number | undefined, lon: number | undefine
   return axios.get(`/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
 };
 
-const fetchHourlyTemp = (lat: number | undefined, lon: number | undefined): Promise<HourlyWeather> => {
-  return axios.get(`/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
+const fetchHourlyTemp = (lat: number | undefined, lon: number | undefined, signal: AbortSignal): Promise<HourlyWeather> => {
+  return axios.get(`/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`, { signal });
 };
 
 const fetchSearchWeatherResult = async (name: SetStateAction<string>): Promise<CurrentWeatherConfig | null> => {

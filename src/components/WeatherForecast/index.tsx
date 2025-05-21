@@ -9,18 +9,26 @@ function WeatherForecast({ lat, lon }: HourlyCoord) {
   const [filterInfo, setFilterInfo] = useState<WeatherEntry[]>([]);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const getHourlyWeather = async () => {
+      try {
+        const res = await fetchHourlyTemp(lat, lon, signal);
+        modifyInfo(res.list);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     getHourlyWeather();
+
+    return () => {
+      controller.abort();
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const getHourlyWeather = async () => {
-    try {
-      const res = await fetchHourlyTemp(lat, lon);
-      modifyInfo(res.list);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const modifyInfo = (data: WeatherEntry[]) => {
     const perDayInfo = data.filter((item) => item.dt_txt.includes('12:00:00'));
